@@ -1,0 +1,269 @@
+﻿<Window x:Class="WeddingVisitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeddingVisitor"
+        mc:Ignorable="d"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:enum="clr-namespace:WeddingVisitor"
+        xmlns:converter="clr-namespace:WeddingVisitor.Converter"
+        WindowState="Maximized"
+        Title="하객 관리" Height="600" Width="1400">
+    <Window.Resources>
+        <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <converter:TimeToStringConverter x:Key="TimeToStringConverter"/>
+        <ObjectDataProvider x:Key="HostProvider" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:eHost"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <Style TargetType="ListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="Padding" Value="5"/>            
+        </Style>
+
+        <!-- GridViewColumnHeader 스타일 (테이블 헤더) -->
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+        </Style>
+
+        <!-- ListViewItem 스타일 (테이블 행) -->
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EEEEEE"/>
+            <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown"/>
+
+            <!-- ControlTemplate 재정의 -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="ItemBorder" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+
+                        <!-- 트리거 정의 -->
+                        <ControlTemplate.Triggers>
+                            <!-- 마우스 오버 -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#E8F0FE"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#B3D1FF"/>
+                            </Trigger>
+
+                            <!-- 선택된 항목 스타일 -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#D0E6FF"/>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#005A9E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 셀 텍스트 스타일 -->
+        <Style TargetType="TextBlock" x:Key="TableCellText">
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Summary Grid의 Header 스타일 -->
+        <Style TargetType="TextBlock" x:Key="SummaryHeaderText">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Summary Grid의 Cell 텍스트 스타일 -->
+        <Style TargetType="TextBlock" x:Key="SummaryCellText">
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="FormLabelStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+
+        <!-- TextBox 스타일 -->
+        <Style TargetType="TextBox" x:Key="FormTextBoxStyle">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="FormButtonStyle">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5,20,5,0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="100"/>
+            <!-- Hover 효과 추가 -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#45A049"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="5" KeyDown="StackPanel_KeyDown">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="이름" Style="{StaticResource FormLabelStyle}"/>
+            <TextBox Grid.Row="1" Margin="3" x:Name="_nameTextBox"
+                         Text="{Binding InputName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"/>
+            <TextBlock Grid.Row="2" Text="축의 금액 (단위 : 만원)"  Style="{StaticResource FormLabelStyle}"/>
+            <TextBox Grid.Row="3" Margin="3"
+                         Text="{Binding InputMoney, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"/>
+            <TextBlock Grid.Row="4" Text="성인 식권 개수"  Style="{StaticResource FormLabelStyle}"/>
+            <TextBox Grid.Row="5"  Margin="3"
+                         Text="{Binding InputAdultTicketCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"/>
+
+            <TextBlock Grid.Row="6" Text="아동 식권 개수"  Style="{StaticResource FormLabelStyle}"/>
+            <TextBox Grid.Row="7"  Margin="3"
+                         Text="{Binding InputChildTicketCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"/>
+
+            <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Button Content="등록" Command="{Binding RegisterCommand}" Style="{StaticResource FormButtonStyle}"/>
+                <Button Content="취소" Command="{Binding CancelCommand}"  Style="{StaticResource FormButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1"  Margin="5" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Row="0" Margin="5" FontSize="12"
+                          ItemsSource="{Binding Guests, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.Resources>
+                    <Style TargetType="TextBlock">
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="FontSize" Value="17"/>
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="이름" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TableCellText}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="축의금 (단위 : 만원)" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Money}" Style="{StaticResource TableCellText}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="성인 식권 개수" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding AdultTicketCount}" Style="{StaticResource TableCellText}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="아동 식권 개수" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding AdultTicketCount}" Style="{StaticResource TableCellText}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="시간" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Time, Converter={StaticResource TimeToStringConverter}}" Style="{StaticResource TableCellText}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Grid Grid.Row="1" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="인원 : " Style="{StaticResource SummaryHeaderText}"/>
+                <TextBlock Grid.Column="1" Text="{Binding TotalGuest, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SummaryCellText}"/>
+                <TextBlock Grid.Column="2" Text="성인 식권 : " Style="{StaticResource SummaryHeaderText}"/>
+                <TextBlock Grid.Column="3" Text="{Binding TotalAdultTicket, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SummaryCellText}"/>
+                <TextBlock Grid.Column="4" Text="어린이 식권 :" Style="{StaticResource SummaryHeaderText}"/>
+                <TextBlock Grid.Column="5" Text="{Binding TotalChildTicket, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SummaryCellText}"/>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>
