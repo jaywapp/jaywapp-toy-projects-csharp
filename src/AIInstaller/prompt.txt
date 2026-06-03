@@ -1,0 +1,268 @@
+AI CLI Unified Installation Wizard – Project Plan
+1. Project Overview
+1.1 Purpose
+
+Provide a WPF-based installation wizard that allows users to install, configure, and manage multiple AI CLI tools (such as Codex and Claude Code) in a unified way on Windows.
+
+Goals:
+
+Lower the entry barrier for AI CLI usage
+
+Enforce consistent behavior through a shared RuleSet
+
+Support future AI models and CLI tools with minimal changes
+
+2. Target Users
+
+Developers working on Windows
+
+Users of AI CLI tools such as Codex or Claude Code
+
+Users who want standardized rules across multiple AI models
+
+3. Core Requirements
+3.1 Functional Requirements
+
+AI CLI installation wizard
+
+Initial support for Codex and Claude Code
+
+Extensible architecture for adding new models/CLIs
+
+Guided account connection per model (API Key, OAuth, etc.)
+
+Configurable shared RuleSet used by all CLIs
+
+Detection and respect of already installed CLI environments
+
+3.2 Non-Functional Requirements
+
+Must run on Windows
+
+WPF-based application (.NET 8)
+
+Clear UX for administrator permission requests
+
+Failure handling with clear diagnostics and recovery guidance
+
+4. System Architecture Overview
+
+WPF Installer Application
+
+CLI Detection Module
+
+CLI Installation Manager
+
+Account Connection Wizard
+
+RuleSet Manager
+
+Model Registry (extension point)
+
+Execution and Validation Layer
+
+5. Installation Wizard Flow
+5.1 Entry Screen
+
+Welcome screen
+
+List of supported AI models
+
+Automatic detection of existing CLI installations
+
+5.2 CLI Installation Detection
+
+Detection methods:
+
+PATH environment variable
+
+Default installation paths
+
+Execution test (for example: version check)
+
+Presence of configuration files
+
+Detection result categories:
+
+Not Installed
+
+Installation required
+
+Installed
+
+Proceed to account connection
+
+Installed and Connected
+
+Configuration management only
+
+Invalid or Broken
+
+Recovery or reinstallation recommended
+
+5.3 CLI Installation Step
+
+Installation logic encapsulated per CLI
+
+No forced reinstallation if already installed
+
+User-driven decisions
+
+6. Model Account Connection
+6.1 Supported Methods
+
+API Key input
+
+OAuth-based web authentication
+
+CLI-based authentication commands
+
+6.2 UX Principles
+
+Allow “Connect now” or “Later”
+
+Validate connection success
+
+Provide a simple test execution
+
+7. Shared RuleSet Management
+7.1 RuleSet Concept
+
+A shared set of rules applied across all AI CLI tools.
+
+Example rules:
+
+Do not ask follow-up questions
+
+Allow access to specified directories
+
+Require documentation after task completion
+
+Enforce WPF / MVVM development rules
+
+7.2 RuleSet Storage Layout
+
+Application data directory:
+
+rulesets
+
+default.ruleset.json
+
+custom.ruleset.json
+
+model-mapping.json
+
+7.3 RuleSet Application
+
+Automatically injected into CLI prompts or configuration
+
+Model-specific overrides allowed
+
+User-editable
+
+8. Extensible Model Architecture
+8.1 Model Registry Concept
+
+Each model definition includes:
+
+Model identifier
+
+Display name
+
+Installation strategy
+
+Authentication strategy
+
+RuleSet support flag
+
+8.2 Adding a New Model
+
+Add model definition to the registry
+
+Implement installation and authentication strategies
+
+UI automatically reflects the new model
+
+9. Handling Existing CLI Installations
+9.1 Principles
+
+Respect existing user environments
+
+No forced overwrites
+
+User choice is always prioritized
+
+9.2 Supported Options
+
+Use existing CLI as-is
+
+Manage configuration only
+
+Migrate to latest version
+
+Install side-by-side
+
+10. Technology Stack
+
+UI: WPF
+
+Runtime: .NET 8
+
+Architecture: MVVM
+
+Configuration: JSON
+
+Process execution: System.Diagnostics.Process
+
+11. Project Structure Example
+
+Solution layout:
+
+AIInstaller.App
+
+AIInstaller.Core
+
+Detection
+
+Installation
+
+RuleSet
+
+Models
+
+AIInstaller.CLIAdapters
+
+Claude
+
+Codex
+
+12. Risks and Mitigation
+
+Changes in CLI installation methods
+
+Use Strategy pattern
+
+Changes in authentication policies
+
+Separate authentication adapters
+
+Diverse user environments
+
+Detection-first, minimal modification approach
+
+13. Future Enhancements
+
+Built-in CLI launcher
+
+Project-specific RuleSets
+
+Team-wide RuleSet distribution
+
+Remote PC AI Agent integration
+
+Slack and GitHub integrations
+
+14. Conclusion
+
+This project is not just an installer.
+It aims to become a Windows-based control center for standardized AI CLI usage.
