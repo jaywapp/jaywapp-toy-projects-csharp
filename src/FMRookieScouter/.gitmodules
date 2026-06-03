@@ -1,0 +1,3 @@
+[submodule "Src/Jaywapp.UI"]
+	path = Src/Jaywapp.UI
+	url = git@github.com:jaywapp/Jaywapp.UI.git

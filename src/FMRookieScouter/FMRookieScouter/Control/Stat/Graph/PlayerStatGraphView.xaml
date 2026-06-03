@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="FMRookieScouter.Control.Stat.Graph.PlayerStatGraphView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:graph="clr-namespace:FMRookieScouter.Control.Stat.Graph"
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800"
+             DataContextChanged="OnDataContextChanged"
+             x:Name="_userControl">
+    <ScrollViewer>
+        <StackPanel>
+            <graph:FieldPlayerStatGraphView 
+            Visibility="{Binding ElementName=_userControl, Path=FieldPlayerVisibility}"
+            DataContext="{Binding ElementName=_userControl, Path=Player}"/>
+            <graph:GoalkeepperPlayerStatGraphView
+            Visibility="{Binding ElementName=_userControl, Path=GoalkeeperVisibility}"
+            DataContext="{Binding ElementName=_userControl, Path=Player}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
