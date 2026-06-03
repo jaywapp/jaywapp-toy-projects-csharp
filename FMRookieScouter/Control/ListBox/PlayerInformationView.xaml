@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="FMRookieScouter.Control.ListBox.PlayerInformationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FMRookieScouter.Control.ListBox"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContextChanged="OnDataContextChanged"
+             x:Name="_userControl">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="Name">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style TargetType="StackPanel" x:Key="Stack">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- 이름 -->
+        <TextBlock Grid.Row="0" Style="{StaticResource Name}" Text="{Binding ElementName=_userControl, Path=DisplayName}"/>
+        <!-- 포지션 -->
+        <local:PositionsView Grid.Row="1" DataContext="{Binding Part.Positions}"/>
+        <!-- 소속정보 -->
+        <StackPanel Grid.Row="2" Style="{StaticResource Stack}" >
+            <local:LogoView DataContext="{Binding Belong.Club}"/>
+            <local:LogoView DataContext="{Binding Belong.Nation}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
