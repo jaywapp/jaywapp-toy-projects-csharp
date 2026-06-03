@@ -1,0 +1,285 @@
+<ui:FluentWindow x:Class="AIInstaller.App.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 mc:Ignorable="d"
+                 Title="AI CLI Installer"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 Height="640"
+                 Width="920"
+                 MinHeight="560"
+                 MinWidth="760">
+    <ui:FluentWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </ui:FluentWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="AI CLI 설치 마법사" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#F2F4F7" BorderBrush="#E0E3E8" BorderThickness="0,0,1,0">
+                <StackPanel Margin="24,28,24,24">
+                    <TextBlock Margin="0,0,0,18" FontSize="13" FontWeight="SemiBold" Foreground="#344054" Text="작업 단계" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="28" Height="28" CornerRadius="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#D0D5DD" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStep1Active}" Value="True">
+                                            <Setter Property="Background" Value="#2563EB" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsStep1Completed}" Value="True">
+                                            <Setter Property="Background" Value="#16A34A" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="1" />
+                                        <Setter Property="Foreground" Value="#667085" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsStep1Active}" Value="True">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsStep1Completed}" Value="True">
+                                                <Setter Property="Text" Value="&#x2713;" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                        <TextBlock Margin="10,5,0,0" FontSize="12" FontWeight="SemiBold" Text="설치 상태 확인" />
+                    </StackPanel>
+
+                    <Border Width="2" Height="20" HorizontalAlignment="Left" Margin="13,3,0,3" Background="#D0D5DD" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="28" Height="28" CornerRadius="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#D0D5DD" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStep2Active}" Value="True">
+                                            <Setter Property="Background" Value="#2563EB" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsStep2Completed}" Value="True">
+                                            <Setter Property="Background" Value="#16A34A" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="2" />
+                                        <Setter Property="Foreground" Value="#667085" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsStep2Active}" Value="True">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsStep2Completed}" Value="True">
+                                                <Setter Property="Text" Value="&#x2713;" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                        <TextBlock Margin="10,5,0,0" FontSize="12" FontWeight="SemiBold" Text="설치 및 연결" />
+                    </StackPanel>
+
+                    <Border Width="2" Height="20" HorizontalAlignment="Left" Margin="13,3,0,3" Background="#D0D5DD" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="28" Height="28" CornerRadius="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#D0D5DD" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStep3Active}" Value="True">
+                                            <Setter Property="Background" Value="#2563EB" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsStep3Completed}" Value="True">
+                                            <Setter Property="Background" Value="#16A34A" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="3" />
+                                        <Setter Property="Foreground" Value="#667085" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsStep3Active}" Value="True">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsStep3Completed}" Value="True">
+                                                <Setter Property="Text" Value="&#x2713;" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                        <TextBlock Margin="10,5,0,0" FontSize="12" FontWeight="SemiBold" Text="규칙 편집" />
+                    </StackPanel>
+
+                    <Border Width="2" Height="20" HorizontalAlignment="Left" Margin="13,3,0,3" Background="#D0D5DD" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="28" Height="28" CornerRadius="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#D0D5DD" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStep4Active}" Value="True">
+                                            <Setter Property="Background" Value="#2563EB" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" Foreground="White" Text="4" />
+                        </Border>
+                        <TextBlock Margin="10,5,0,0" FontSize="12" FontWeight="SemiBold" Text="완료" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Column="1" Margin="28,20,28,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" FontSize="20" FontWeight="SemiBold" Foreground="#1D2939" Text="{Binding WizardTitle}" />
+                <TextBlock Grid.Row="1" Margin="0,4,0,16" FontSize="12" Foreground="#667085" Text="{Binding StepDescription}" />
+
+                <DataGrid Grid.Row="2"
+                          Visibility="{Binding IsDataGridVisible, Converter={StaticResource BoolToVisibility}}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          RowHeaderWidth="0"
+                          SelectionMode="Single"
+                          BorderBrush="#E0E3E8"
+                          BorderThickness="1"
+                          ItemsSource="{Binding ModelStatuses}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="모델" Binding="{Binding DisplayName}" Width="110" />
+                        <DataGridTextColumn Header="상태" Binding="{Binding Status}" Width="170" />
+                        <DataGridTextColumn Header="권장 작업" Binding="{Binding RecommendedAction}" Width="140" />
+                        <DataGridTextColumn Header="버전" Binding="{Binding Version}" Width="140" />
+                        <DataGridTextColumn Header="진단" Binding="{Binding Diagnostics}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Row="2" Visibility="{Binding IsRuleEditorVisible, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" FontSize="12" FontWeight="SemiBold" Foreground="#344054" Text="저장 디렉터리" />
+                    <TextBox Grid.Row="1"
+                             Margin="0,4,0,12"
+                             Padding="8,6"
+                             FontSize="12"
+                             Text="{Binding RuleDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Margin="0,0,0,4" FontSize="12" FontWeight="SemiBold" Foreground="#344054" Text="RULE.md 내용" />
+                        <TextBox Grid.Row="1"
+                                 AcceptsReturn="True"
+                                 AcceptsTab="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 FontFamily="Consolas"
+                                 FontSize="12"
+                                 Padding="8"
+                                 BorderBrush="#E0E3E8"
+                                 BorderThickness="1"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding RuleContent, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="2" BorderBrush="#E0E3E8" BorderThickness="0,1,0,0" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:SymbolIcon Symbol="Info24" Foreground="#667085" Margin="0,0,8,0" />
+                    <TextBlock Text="{Binding StatusMessage}"
+                               VerticalAlignment="Center"
+                               Foreground="#344054"
+                               TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis"
+                               MaxWidth="420" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ui:Button Margin="0,0,8,0"
+                               Appearance="Secondary"
+                               Padding="20,8"
+                               Visibility="{Binding IsPreviousButtonVisible, Converter={StaticResource BoolToVisibility}}"
+                               Command="{Binding PreviousCommand}"
+                               Content="이전" />
+                    <ui:Button Margin="0,0,8,0"
+                               Appearance="Primary"
+                               Padding="20,8"
+                               Visibility="{Binding IsNextButtonVisible, Converter={StaticResource BoolToVisibility}}"
+                               Command="{Binding NextCommand}"
+                               Content="다음" />
+                    <ui:Button Margin="0,0,8,0"
+                               Appearance="Primary"
+                               Padding="20,8"
+                               Visibility="{Binding IsFinishButtonVisible, Converter={StaticResource BoolToVisibility}}"
+                               Command="{Binding FinishCommand}"
+                               Content="완료" />
+                    <ui:Button Appearance="Secondary"
+                               Padding="20,8"
+                               Command="{Binding ExitCommand}"
+                               Content="종료" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</ui:FluentWindow>
