@@ -22,8 +22,28 @@ public sealed class CliDetectionService
         {
             if (_detectors.TryGetValue(model.Identifier, out ICliDetector? detector))
             {
-                CliDetectionResult result = await detector.DetectAsync(cancellationToken).ConfigureAwait(false);
-                results.Add(result);
+                try
+                {
+                    CliDetectionResult result = await detector.DetectAsync(cancellationToken).ConfigureAwait(false);
+                    results.Add(result);
+                }
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    System.Diagnostics.Trace.TraceWarning("CLI detection failed for {0} ({1}).",
+                        model.Identifier, exception.GetType().Name);
+                    results.Add(new CliDetectionResult
+                    {
+                        ModelIdentifier = model.Identifier,
+                        Status = CliInstallationStatus.InvalidOrBroken,
+                        ExecutablePath = string.Empty,
+                        Version = string.Empty,
+                        Diagnostics = $"Detection failed ({exception.GetType().Name})."
+                    });
+                }
             }
             else
             {
